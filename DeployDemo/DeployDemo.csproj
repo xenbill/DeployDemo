@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<!--post build script to build react app and copy to wwwroot-->
+	<Target Name="PostPublishScript" AfterTargets="Publish">
+		<Exec Command="cd ..\client  &amp;&amp; npm run build" />
+		<Exec Command="robocopy ..\client\dist $(PublishDir)wwwroot /MIR" ContinueOnError="true" />
+		<Exec Command="exit 0" Condition=" '$(MSBuildLastTaskResult)' == 'False' " />
+	</Target>
+
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+</Project>
